@@ -126,4 +126,62 @@ describe("PathwaveClient", () => {
       });
     });
   });
+
+  describe("paypal.makePayment", () => {
+    it("sends request to paypal.payout with default CHF currency", async () => {
+      const mockResponse = {
+        ok: true,
+        json: vi.fn().mockResolvedValue({ payoutId: "p-123" }),
+      };
+      (global.fetch as any).mockResolvedValue(mockResponse);
+
+      const client = new PathwaveClient();
+      await client.paypal.makePayment("payee@example.com", 10);
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.pathwave.io/users/test-user-sid/tools/paypal.payout/invoke",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            args: { email: "payee@example.com", amount: 10, currency: "CHF" },
+          }),
+        }
+      );
+    });
+
+    it("sends request with explicit currency when provided", async () => {
+      const mockResponse = {
+        ok: true,
+        json: vi.fn().mockResolvedValue({ payoutId: "p-456" }),
+      };
+      (global.fetch as any).mockResolvedValue(mockResponse);
+
+      const client = new PathwaveClient();
+      await client.paypal.makePayment("usd@example.com", 25.5, "USD");
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.pathwave.io/users/test-user-sid/tools/paypal.payout/invoke",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            args: { email: "usd@example.com", amount: 25.5, currency: "USD" },
+          }),
+        }
+      );
+    });
+
+    it("returns PathwaveResponse passthrough from invokeTool", async () => {
+      const payload = { payoutId: "p-789", status: "COMPLETED" };
+      (global.fetch as any).mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue(payload),
+      });
+
+      const client = new PathwaveClient();
+      const resp = await client.paypal.makePayment("resp@example.com", 1.23, "EUR");
+      expect(resp).toEqual({ ok: true, data: payload });
+    });
+  });
 });

@@ -32,12 +32,9 @@ process.env.PATHWAVE_USER_SID = "your-user-sid";
 // Create the client
 const client = new PathwaveClient();
 
-// Invoke a tool
+// Make a PayPal payout (currency defaults to CHF)
 async function makePayment() {
-  const response = await client.invokeTool("paypal.payout", {
-    amount: 10,
-    currency: "CHF",
-  });
+  const response = await client.paypal.makePayment("payee@example.com", 10, "CHF");
 
   if (response.ok) {
     console.log("Payment successful:", response.data);
@@ -62,6 +59,16 @@ constructor()
 ```
 
 Creates a new client instance. Throws an error if `PATHWAVE_USER_SID` environment variable is not set.
+
+#### Namespaces
+
+##### `client.paypal`
+
+Helpers for PayPal-related operations.
+
+- `makePayment(email: string, amount: number, currency?: string): Promise<PathwaveResponse>`
+  - Initiates a PayPal payout to the given email.
+  - `currency` defaults to `"CHF"` if not provided.
 
 #### Methods
 
