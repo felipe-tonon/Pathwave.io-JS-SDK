@@ -55,7 +55,7 @@ The main client class for interacting with the Pathwave API.
 #### Constructor
 
 ```typescript
-constructor()
+constructor();
 ```
 
 Creates a new client instance. Throws an error if `PATHWAVE_USER_SID` environment variable is not set.
@@ -99,8 +99,8 @@ Returns a `PathwaveResponse` object:
 
 ```typescript
 {
-  name: string;               // Name of the tool
-  args: Record<string, any>;  // Arguments for the tool
+  name: string; // Name of the tool
+  args: Record<string, any>; // Arguments for the tool
 }
 ```
 
@@ -108,7 +108,7 @@ Returns a `PathwaveResponse` object:
 
 ```typescript
 {
-  agentId: string;   // ID of the agent
+  agentId: string; // ID of the agent
   sessionId: string; // Current session ID
 }
 ```

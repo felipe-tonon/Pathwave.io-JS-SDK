@@ -15,11 +15,11 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
-      { 
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "ignoreRestSiblings": true 
-      }
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        ignoreRestSiblings: true,
+      },
     ],
     "prettier/prettier": "error",
   },
