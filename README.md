@@ -137,4 +137,4 @@ npm run env:check
 
 ## License
 
-MIT
+PolyForm Noncommercial License 1.0.0
